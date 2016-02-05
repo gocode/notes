@@ -1,0 +1,169 @@
+Configuration
+=============
+/etc/gitconfig
+~/.gitconfig or ~/.config/git/config
+.git/config
+
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+
+git config --global core.editor vim
+
+git config --list
+
+Initializing a Repository
+=========================
+git init
+git add *.go
+git commit -m 'initial version'
+
+git clone https://github.com/libgit2/libgit2
+git clone https://github.com/libgit2/libgit2 mylibgit
+
+git clone git://
+git clone user@server:path/to/repo.git
+
+Recording Changes to the Repository
+===================================
+git status
+git status -s or git status --short
+
+git add README
+
+.gitignore
+
+git diff
+git diff --staged or git diff --cached
+
+git commit
+git commit -m "commit message"
+git commit -a -m "commit message"
+
+git rm
+git rm --cached
+
+git mv file_from file_to
+
+Viewing the Commit History
+==========================
+git log
+git log -p -2  //changes made in last 2 commits
+git log --stat
+
+git log --pretty=oneline
+git log --pretty=short
+git log --pretty=full
+git log --pretty=fuller
+git log --pretty=format:"%h - %an, %ar : %s"
+git log --pretty=format:"%h %s" --graph
+
+git log --since=2.weeks or git log --after=2.weeks
+git log --since="2008-01-15"
+git log --until=2.weeks or git log --before=2.weeks
+
+git log -S function_name
+git log -grep <commit-message>
+
+git log <path>
+
+git log --oneline --decorate --graph --all
+
+Undoing Things
+==============
+git commit --amend
+git reset HEAD file_name  //unstage
+git checkout
+
+Working with Remotes
+====================
+git remote
+git remote -v
+git remote add <shortname> <url>
+
+git fetch <shortname>
+git fetch origin //origin is the default remote from which the project was cloned
+
+git pull //fetch and merge
+
+git push [remote-name] [branch-name]
+git push origin master
+
+git remote show [remote-name]
+git remote show origin
+
+git remote rename [old-remote-name] [new-remote-name]
+git remote rm [remote-name]
+
+Tagging
+=======
+git tag
+git tag -l "v1.8.5*"
+
+git tag -a v1.4 -m "my version 1.4" //annotated tag
+
+git tag v1.4-lw //lightweight tag
+
+git tag -a v1.2 9fceb02 //tag later with checksum
+ 
+git show v1.4
+
+git push origin [tagname]
+git push origin v1.5
+git push origin --tags //pushes all tags
+
+git checkout -b [branchname] [tagname]
+git checkout -b version2 v2.0.0
+
+Git Aliases
+===========
+git config --global alias.co checkout
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.visual '!gitk'  //run external command by prefixing it with !
+
+Branching
+=========
+git branch testing
+git checkout testing //switch to branch; Switching branches changes files in your working directory
+
+git checkout -b testing
+git checkout -b serverfix origin/serverfix
+
+git merge [branch-name]
+git merge hotfix
+
+git add  //Staging the file after manually merging marks it as resolved in Git
+git mergetool
+git commit
+
+git branch -d hotfix  //deleting unmerged branch will fail
+git push origin --delete serverfix //delete branch in remote
+
+git branch -v //shows last commit from each branch
+git branch --merged
+git branch --no-merged
+
+git fetch origin
+
+git push <remote> <branch>
+
+Rebase
+======
+//rebase takes all the changes that were committed on one branch and replay them on another one
+//In below example all changes in experiment is applied to master
+git checkout experiment
+git rebase master
+git checkout master
+git merge experiment
+
+//merge client changes alone
+git rebase --onto master server client
+git checkout master
+git merge client
+
+//now merge server changes also
+git rebase master server
+git checkout master
+git merge server
+
+git rebase [basebranch] [topicbranch]
