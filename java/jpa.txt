@@ -1,0 +1,60 @@
+perisitence.xml
+---------------
+<persistence>
+    <persistence-unit name="OrderManagement">
+	  <!-- <persistence-unit name="OrderManagement" transaction-type="RESOURCE_LOCAL"> -->
+        <description>
+			      This unit manages orders and customers.
+            It does not rely on any vendor-specific features and can
+            therefore be deployed to any persistence provider.
+        </description>
+        <jta-data-source>jdbc/MyOrderDB</jta-data-source>
+		    <!-- <non-jta-data-source>jdbc/MyOrderDB</non-jta-data-source>-->
+        <jar-file>MyOrderApp.jar</jar-file>
+        <class>com.widgets.Order</class>
+        <class>com.widgets.Customer</class>
+    </persistence-unit>
+	<properties>
+			<property name="openjpa.ConnectionDriverName" value="com.ibm.db2.jcc.DB2Driver" />
+			<property name="openjpa.ConnectionURL" value="jdbc:db2://machine:port/database" />			
+			<property name="openjpa.ConnectionUserName" value="username" />
+			<property name="openjpa.ConnectionPassword" value="password" />
+			<property name="openjpa.ConnectionFactoryProperties"
+				value="PrettyPrint=true, PrettyPrintLineLength=72, PrintParameters=True" />
+	</properties>
+</persistence>
+
+@PersistenceUnit
+@PersistenceContext
+
+@Entity
+@Table(name="")
+@Id
+@Column(name="ORDERID", nullable=false, insertable=false, updatable=false)
+
+@OneToMany(cascade=ALL, mappedBy="order")
+@ManyToOne
+
+@NamedQuery(
+    name="findTotalVendorPartPricePerVendor",
+    query="SELECT SUM(vp.price) " +
+    "FROM VendorPart vp " +
+    "WHERE vp.vendor.vendorId = :id"
+)
+
+EntityManager
+-------------
+find(Order.class, orderId)
+remove(obj)
+persist(obj)
+merge(obj)
+
+createQuery()
+createNamedQuery()
+
+Query
+-----
+setParameter()
+setMaxResults()
+getResultList()
+getSingleResult()
